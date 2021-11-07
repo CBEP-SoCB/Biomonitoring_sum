@@ -3,17 +3,17 @@ Attained Stream Class Related to Impervious Cover
 Curtis C. Bohlen, Casco Bay Estuary Partnership
 12/19/2020
 
-  - [Introduction](#introduction)
-  - [Load Libraries](#load-libraries)
-  - [Load Data](#load-data)
-      - [Establish Folder References](#establish-folder-references)
-      - [Read the Data](#read-the-data)
-          - [Recent Sample Data](#recent-sample-data)
-  - [Preliminary Plots](#preliminary-plots)
-  - [Violin Plot](#violin-plot)
-  - [Dot Plots](#dot-plots)
-  - [Make Table](#make-table)
-  - [Direct Modelling](#direct-modelling)
+-   [Introduction](#introduction)
+-   [Load Libraries](#load-libraries)
+-   [Load Data](#load-data)
+    -   [Establish Folder References](#establish-folder-references)
+    -   [Read the Data](#read-the-data)
+        -   [Recent Sample Data](#recent-sample-data)
+-   [Preliminary Plots](#preliminary-plots)
+-   [Violin Plot](#violin-plot)
+-   [Dot Plots](#dot-plots)
+-   [Make Table](#make-table)
+-   [Direct Modelling](#direct-modelling)
 
 <img
   src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
@@ -38,15 +38,23 @@ upstream IC.
 
 ``` r
 library(tidyverse)
-#> -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-#> v ggplot2 3.3.2     v purrr   0.3.4
-#> v tibble  3.0.4     v dplyr   1.0.2
-#> v tidyr   1.1.2     v stringr 1.4.0
-#> v readr   1.4.0     v forcats 0.5.0
+#> Warning: package 'tidyverse' was built under R version 4.0.5
+#> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+#> v ggplot2 3.3.5     v purrr   0.3.4
+#> v tibble  3.1.4     v dplyr   1.0.7
+#> v tidyr   1.1.3     v stringr 1.4.0
+#> v readr   2.0.1     v forcats 0.5.1
+#> Warning: package 'ggplot2' was built under R version 4.0.5
+#> Warning: package 'tibble' was built under R version 4.0.5
+#> Warning: package 'tidyr' was built under R version 4.0.5
+#> Warning: package 'readr' was built under R version 4.0.5
+#> Warning: package 'dplyr' was built under R version 4.0.5
+#> Warning: package 'forcats' was built under R version 4.0.5
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
 library(emmeans)
+#> Warning: package 'emmeans' was built under R version 4.0.5
 library(mblm)
 
 library(CBEPgraphics)
@@ -59,7 +67,7 @@ theme_set(theme_cbep())
 ## Establish Folder References
 
 ``` r
-sibfldnm <- 'Derived_Data'
+sibfldnm <- 'Data'
 parent   <- dirname(getwd())
 sibling  <- file.path(parent,sibfldnm)
 
@@ -90,19 +98,15 @@ the_data <- read_csv(file.path(sibling, fn), na = '') %>%
   mutate(Final_o = ordered(Final, levels = c('NA', 'C', 'B', 'A'))) %>%
   mutate(Final_f = factor(Final, levels = c('I', 'NA', 'C', 'B', 'A'))) %>%
   relocate(c(Final_f, Final_o), .after = Final)
-#> 
+#> Rows: 68 Columns: 9
 #> -- Column specification --------------------------------------------------------
-#> cols(
-#>   Station = col_character(),
-#>   Type = col_character(),
-#>   Date = col_date(format = ""),
-#>   Statutory = col_character(),
-#>   Final = col_character(),
-#>   Attained = col_character(),
-#>   Year = col_double(),
-#>   Final_f = col_character(),
-#>   local_imperv = col_double()
-#> )
+#> Delimiter: ","
+#> chr  (6): Station, Type, Statutory, Final, Attained, Final_f
+#> dbl  (2): Year, local_imperv
+#> date (1): Date
+#> 
+#> i Use `spec()` to retrieve the full column specification for this data.
+#> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
 
 # Preliminary Plots
@@ -254,7 +258,7 @@ the_data %>%
 ```
 
 | Attained Class | Mean | Median | Sample | Std Dev | Std Err |
-| :------------- | ---: | -----: | -----: | ------: | ------: |
+|:---------------|-----:|-------:|-------:|--------:|--------:|
 | A              |  5.2 |    3.2 |     15 |   4.969 |   1.283 |
 | B              |  9.9 |    7.3 |      9 |   8.874 |   2.958 |
 | C              | 13.0 |   15.7 |      4 |   7.034 |   3.517 |
@@ -309,8 +313,8 @@ summary(the_lm)
 ```
 
 So, both ‘NA’ and ‘A’ are different from the reference level (here,
-‘I’). We need to turn to EMMEANS or use another pairwise procedure,
-to determine other comparisons.
+‘I’). We need to turn to EMMEANS or use another pairwise procedure, to
+determine other comparisons.
 
 ``` r
 (emm <- emmeans(the_lm, 'Final_f', type = 'response'))

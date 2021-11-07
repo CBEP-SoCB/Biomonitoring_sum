@@ -46,7 +46,7 @@ theme_set(theme_cbep())
 # Load Data
 ## Establish Folder References
 ```{r folder_refs}
-sibfldnm <- 'Derived_Data'
+sibfldnm <- 'Data'
 parent   <- dirname(getwd())
 sibling  <- file.path(parent,sibfldnm)
 
