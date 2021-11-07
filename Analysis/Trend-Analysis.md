@@ -3,34 +3,33 @@ Analysis of Trends at Sites with Multiple Biomonitoring Samples
 Curtis C. Bohlen, Casco Bay Estuary Partnership
 11/19/2020
 
-  - [Introduction](#introduction)
-  - [Utility Functions](#utility-functions)
-  - [Load Libraries](#load-libraries)
-  - [Load Data](#load-data)
-      - [Establish Folder References](#establish-folder-references)
-      - [Read the Data](#read-the-data)
-          - [Primary Sample Data](#primary-sample-data)
-          - [Station Data](#station-data)
-      - [Create Trend Data](#create-trend-data)
-  - [Exploratory Graphics](#exploratory-graphics)
-      - [Changes in Achieved Class](#changes-in-achieved-class)
-      - [Does the Station Meet Class?](#does-the-station-meet-class)
-  - [Example: S-72](#example-s-72)
-      - [Data and Graphic](#data-and-graphic)
-      - [Initial Model](#initial-model)
-      - [Model Results Are Unstable](#model-results-are-unstable)
-      - [Predictions](#predictions)
-  - [Notes on Model Interpretation](#notes-on-model-interpretation)
-      - [Some Theory](#some-theory)
-      - [Interpreting Intercepts and
+-   [Introduction](#introduction)
+-   [Utility Functions](#utility-functions)
+-   [Load Libraries](#load-libraries)
+-   [Load Data](#load-data)
+    -   [Establish Folder References](#establish-folder-references)
+    -   [Read the Data](#read-the-data)
+        -   [Primary Sample Data](#primary-sample-data)
+        -   [Station Data](#station-data)
+    -   [Create Trend Data](#create-trend-data)
+-   [Exploratory Graphics](#exploratory-graphics)
+    -   [Changes in Achieved Class](#changes-in-achieved-class)
+    -   [Does the Station Meet Class?](#does-the-station-meet-class)
+-   [Example: S-72](#example-s-72)
+    -   [Data and Graphic](#data-and-graphic)
+    -   [Initial Model](#initial-model)
+    -   [Predictions](#predictions)
+-   [Notes on Model Interpretation](#notes-on-model-interpretation)
+    -   [Some Theory](#some-theory)
+    -   [Interpreting Intercepts and
         Coefficients](#interpreting-intercepts-and-coefficients)
-  - [Running All Models](#running-all-models)
-      - [Example output](#example-output)
-      - [Model Summaries](#model-summaries)
-      - [Utility function](#utility-function)
-      - [Year 2010 Intercepts](#year-2010-intercepts)
-      - [Predictions](#predictions-1)
-      - [Probabilities](#probabilities)
+-   [Running All Models](#running-all-models)
+    -   [Example output](#example-output)
+    -   [Model Summaries](#model-summaries)
+    -   [Utility function](#utility-function)
+    -   [Year 2010 Intercepts](#year-2010-intercepts)
+    -   [Predictions](#predictions-1)
+    -   [Probabilities](#probabilities)
 
 <img
   src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
@@ -53,16 +52,15 @@ assigned to each site based on biomonitoring data. We conduct an ordinal
 analysis.
 
 We want to be able to say “this site is getting better”, but for
-**most** sites, data is too sparse to make any such comparison with
-ordinal data. As a result, we need to restrict our attention to the
-small number of sites with rich data histories. Still, results are
-disappointing. Analysis based on ordinal models requires a fair amount
-of data, and while modeling is successful, and informative, none of the
-sites show trends that meet conventional standards of statistical
-significance, simply because the sample sizes are too small.
-Interpreting model results, therefore, is difficult or impossible, and
-results of these analyses can not really be incorporated into State of
-Casco Bay.
+**most** sites, data is too sparse to make any such comparison. As a
+result, we need to restrict our attention to the small number of sites
+with rich data histories. Still, results are disappointing. Analysis
+based on ordinal models requires a fair amount of data, and while
+modeling is successful, and informative, none of the sites show trends
+that meet conventional standards of statistical significance, simply
+because the sample sizes are too small. Interpreting model results,
+therefore, is difficult or impossible, and results of these analyses can
+not really be incorporated into State of Casco Bay.
 
 # Utility Functions
 
@@ -75,9 +73,16 @@ inv_logit <- function(x) {1/(1+exp(-x))}
 
 ``` r
 library(readr)
+```
+
+    ## Warning: package 'readr' was built under R version 4.0.5
+
+``` r
 library(MASS) # for the polr() function
 library(Hmisc)
 ```
+
+    ## Warning: package 'Hmisc' was built under R version 4.0.5
 
     ## Loading required package: lattice
 
@@ -86,6 +91,8 @@ library(Hmisc)
     ## Loading required package: Formula
 
     ## Loading required package: ggplot2
+
+    ## Warning: package 'ggplot2' was built under R version 4.0.5
 
     ## 
     ## Attaching package: 'Hmisc'
@@ -98,13 +105,23 @@ library(Hmisc)
 library(tidyverse)
 ```
 
-    ## -- Attaching packages ------------------------------------------------------------------------------------ tidyverse 1.3.0 --
+    ## Warning: package 'tidyverse' was built under R version 4.0.5
 
-    ## v tibble  3.0.3     v dplyr   1.0.2
-    ## v tidyr   1.1.2     v stringr 1.4.0
-    ## v purrr   0.3.4     v forcats 0.5.0
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 
-    ## -- Conflicts --------------------------------------------------------------------------------------- tidyverse_conflicts() --
+    ## v tibble  3.1.4     v dplyr   1.0.7
+    ## v tidyr   1.1.3     v stringr 1.4.0
+    ## v purrr   0.3.4     v forcats 0.5.1
+
+    ## Warning: package 'tibble' was built under R version 4.0.5
+
+    ## Warning: package 'tidyr' was built under R version 4.0.5
+
+    ## Warning: package 'dplyr' was built under R version 4.0.5
+
+    ## Warning: package 'forcats' was built under R version 4.0.5
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
     ## x dplyr::filter()    masks stats::filter()
     ## x dplyr::lag()       masks stats::lag()
     ## x dplyr::select()    masks MASS::select()
@@ -115,7 +132,7 @@ library(tidyverse)
 library(emmeans)
 ```
 
-    ## Warning: package 'emmeans' was built under R version 4.0.3
+    ## Warning: package 'emmeans' was built under R version 4.0.5
 
 ``` r
 library(CBEPgraphics)
@@ -130,7 +147,7 @@ library(LCensMeans)
 ## Establish Folder References
 
 ``` r
-sibfldnm <- 'Derived_Data'
+sibfldnm <- 'Data'
 parent   <- dirname(getwd())
 sibling  <- file.path(parent,sibfldnm)
 fn <- "Biomonitoring_Samples_CB.csv"
@@ -163,17 +180,15 @@ the_data <- read_csv(file.path(sibling, fn), na = '') %>%
   relocate(Attained, .after = Final)
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   `Station Number` = col_character(),
-    ##   `Sample Type` = col_character(),
-    ##   `Sample ID` = col_character(),
-    ##   `Sample Date` = col_character(),
-    ##   `Statutory Class` = col_character(),
-    ##   `Attained Class` = col_character(),
-    ##   Report = col_character(),
-    ##   `Final Determination` = col_character()
-    ## )
+    ## Rows: 938 Columns: 8
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr (8): Station Number, Sample Type, Sample ID, Sample Date, Statutory Clas...
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ### Station Data
 
@@ -188,21 +203,16 @@ select(-contains('FID')) %>%
          Imperv = PctImperv)
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   FID = col_double(),
-    ##   FID_1 = col_double(),
-    ##   Station_Nu = col_character(),
-    ##   Station = col_character(),
-    ##   Town = col_character(),
-    ##   County = col_character(),
-    ##   Major_Drai = col_character(),
-    ##   Site_Type = col_character(),
-    ##   Sample_Typ = col_character(),
-    ##   Latitude = col_double(),
-    ##   Longitude = col_double(),
-    ##   PctImperv = col_double()
-    ## )
+    ## Rows: 219 Columns: 12
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr (7): Station_Nu, Station, Town, County, Major_Drai, Site_Type, Sample_Typ
+    ## dbl (5): FID, FID_1, Latitude, Longitude, PctImperv
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ## Create Trend Data
 
@@ -213,24 +223,23 @@ are needed to fit our linear predictors. So with four levels in our
 ordinal response (‘A’. ‘B’, ‘C’, and ‘NA’), we will fit three
 intercepts. We can add one more degree of freedom for the Year, for a
 total of four degrees of freedom for the model. Detecting any trend,
-therefore, is likely to require no less than eight , and probably no
-less than ten samples.
+therefore, is likely to require no less than eight, and probably no less
+than ten samples.
 
 to prepare data for trend analysis, we:
 
-1.  Drop indeterminate samples, as they can not fit into an ordinal
-    model
+1.  Drop indeterminate samples, as they can not readily fit into an
+    ordinal model.
 
 2.  Focus only on the invertebrate biomonitoring samples (few Stations
     have long-term algae data sets anyway).
 
 3.  Drop Stations with fewer than a specific number of Samples, here we
-    call for a minimum of seven samples (minimum 3 DF for error).
+    call for a minimum of seven samples (thus ensuring a minimum 3 DF
+    for error).
 
 4.  Drop Stations where Samples span less than a minimum number of
     years, here we chose a minimum period of ten years.
-
-<!-- end list -->
 
 ``` r
 ## Set thresholds
@@ -270,7 +279,9 @@ follows:
 ### Changes in Achieved Class
 
 ``` r
-ggplot(trend_data, aes(x = Station, y = Final_f, group = Year, fill = Year)) +
+ggplot(trend_data, aes(x = Station, y = Final_f, 
+                       group = factor(Year), 
+                       fill = factor(Year))) +
   geom_col(position = position_dodge()) +
   theme_cbep(base_size = 12)
 ```
@@ -291,6 +302,8 @@ ggplot(trend_data, aes(x = Year, y = as.numeric(Final_f)) ) +
 
 Relatively few Stations show any variation in observations, and even
 fewer of them show anything that looks like a trend.
+
+Lets look only at thsoe stations where we saw some variation in results.
 
 ``` r
 change_stations <- trend_data %>%
@@ -336,9 +349,9 @@ attained_change_stations
 
 So, only 5 unique samples with deep sampling histories also show any
 variation in observed class, and only 3 changed whether they met class
-or did not
+or not.
 
-We limit our attention to those three or five stations.
+We limit further attention to those three or five stations.
 
 ``` r
 trend_data <- trend_data %>%
@@ -368,14 +381,7 @@ ggplot(tmp1, aes(y = Final_f, x = Year)) + geom_point()
 
 ## Initial Model
 
-``` r
-test1 <- polr(Final_f ~ Year, data = tmp1,
-             start=c(0, 1, 2, 3), Hess = TRUE,
-             control = list(maxit = 10000))
-test1$convergence
-```
-
-    ## [1] 0
+We use `MASS::polr()` to conduct ordinal logistic regression.
 
 Unfortunately, polr() does not necessarily tell you if it has trouble
 reaching convergence, so it is worth checking the value of the
@@ -386,54 +392,16 @@ In particular, this model had a hard time reaching convergence
 (test1$convergence == 1), so we needed to set a higher iteration limit.
 Luckily, these models run fast, so high iteration limits are feasible.
 
-``` r
-summary(test1)
-```
-
-    ## Call:
-    ## polr(formula = Final_f ~ Year, data = tmp1, start = c(0, 1, 2, 
-    ##     3), control = list(maxit = 10000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##       Value Std. Error t value
-    ## Year 0.8816   0.001833     481
-    ## 
-    ## Intercepts:
-    ##      Value       Std. Error  t value    
-    ## NA|C   1763.8868      0.0035 502211.0336
-    ## C|B    1774.2007      4.7251    375.4824
-    ## B|A    1815.9741      4.7251    384.3231
-    ## 
-    ## Residual Deviance: 0.5167098 
-    ## AIC: 8.51671
-
-Note those very high intercepts. A value that high, in a logit model
-should set your teeth on edge. It implies probabilities of one.
-
-``` r
-inv_logit(1764)
-```
-
-    ## [1] 1
-
-The problem is that `Year` is not centered, and so the intercepts apply
-for the Year == 0, wildly outside of our sample range. This is a recipe
-(in any regression analysis) for uninterpretable coefficients and
-sometimes unstable estimation.
-
-However, for our purposes, it would be interesting to be able to
-interpret the intercepts in a simple way. We can handle that by
-centering the `Year` predictor, by subtracting a specific (recent;
-arbitrary) year. Here we use 2000, as roughly in the middle of the
-source data.
+`Year` is not centered, and so model intercepts apply for the Year == 0,
+wildly outside of our sample range. This is a recipe (in any regression
+analysis) for uninterpretable coefficients and sometimes unstable
+estimation. We can handle that by centering the `Year` predictor, by
+subtracting a specific (recent; arbitrary) year. Here we use 2000, as
+roughly in the middle of the source data.
 
 ``` r
 tmp1 <- tmp1 %>% mutate(CYear = Year - 2000)
 ```
-
-## Model Results Are Unstable
-
-Look what happens if we simply center the year on the year 2000:
 
 ``` r
 test2 <- polr(Final_f ~ CYear, data = tmp1,
@@ -443,6 +411,8 @@ test2$convergence
 ```
 
     ## [1] 0
+
+But model results are apparently unstable.
 
 ``` r
 summary(test2)
@@ -467,9 +437,9 @@ summary(test2)
     ## Residual Deviance: 1.388268e-08 
     ## AIC: 8.00
 
-The intercepts are still large, although not crazy ($p(NC \~ | \~ Year
-=2000) $ 0.9275735), The slope for CYEAR is high, and everything has
-huge standard errors. Also, the AIC is exactly 8.00, and the residual
+The intercepts are large, although not crazy ($p(NC \~ \| \~ Year =
+2000) $ 0.9275735), The slope for CYEAR is high, and everything has huge
+standard errors. Also, the AIC is exactly 8.00, and the residual
 deviance is almost precisely zero.
 
 It appears this happens because the sequence of observations can be fit
@@ -478,42 +448,15 @@ curves near the optima.
 
 ## Predictions
 
-We can generate predictions from these two alternate models, which are
-functionally identical.
+We can generate predictions from the model.
 
 ``` r
 df =tibble(Year = seq(1980,2018,2), CYear = Year - 2000)
-(puc <- predict(test1, newdata = df))
-```
-
-    ##  [1] NA NA NA NA NA NA NA NA NA NA NA C  C  C  C  C  C  B  B  B 
-    ## Levels: NA C B A
-
-``` r
 pc  <- predict(test2, newdata = df)
-all.equal(pc,puc)
 ```
-
-    ## [1] TRUE
 
 But we would really like to find the probabilities, not just the final
 category.
-
-``` r
-pp1 <- predict(test1, newdata = df, type = 'p')
-
-# predict generates an array. we need to convert it.
-pp1 <- as_tibble(pp1) %>%
-  bind_cols(df) %>%
-  relocate(c(Year, CYear)) %>%
-  pivot_longer(`NA`:A, names_to = 'Class', values_to = "Probability")
-
-ggplot(pp1, aes(x = Year, y = Probability, color = Class )) +
-  geom_line() +
-  geom_point()
-```
-
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ``` r
 pp2 <- predict(test2, newdata = df, type = 'p')
@@ -529,10 +472,10 @@ ggplot(pp2, aes(x = Year, y = Probability, color = Class )) +
   geom_point()
 ```
 
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-19-1.png)<!-- --> BY
-Centering the model, we brought the center of the model into the center
-of the data, allowing a tighter fit the the data, which here could be
-fit exactly, leading to unstable behavior.
+![](Trend-Analysis_files/figure-gfm/s_72_example_probabilities-1.png)<!-- -->
+By Centering the model, we brought the center of the model into the
+center of the data, allowing a tighter fit the the data, which here
+could be fit exactly, leading to unstable behavior.
 
 # Notes on Model Interpretation
 
@@ -552,25 +495,26 @@ a particular threshold, which is the probability of being below the
 threshold divided by the probability of NOT being below (i.e., being
 above) the threshold:
 
-\[log \frac{P(Y \le j)}{P(Y>j)} = logit (P(Y \le j)).\]
+$$log \\frac{P(Y \\le j)}{P(Y&gt;j)} = logit (P(Y \\le j)).$$
 
 The relevant model looks like this (first row is generic, second
 includes the parallel lines assumption; all slopes are the same across
 your categories):
-\[logit (P(Y \le j)) = \beta_{j0} + \beta_{j1}x_1 + \cdots + \beta_{jp} x_p\\
-logit (P(Y \le j)) = \beta_{j0} + \beta_{1}x_1 + \cdots + \beta_{p} x_p.
-\] There is one of these equations for each level of the response,`j`
-(except for the highest category, where \(P(Y \gt j)\) is zero, so the
-odds are undefined.
+$$logit (P(Y \\le j)) = \\beta\_{j0} + \\beta\_{j1}x\_1 + \\cdots + \\beta\_{jp} x\_p\\\\
+logit (P(Y \\le j)) = \\beta\_{j0} + \\beta\_{1}x\_1 + \\cdots + \\beta\_{p} x\_p.
+$$
+There is one of these equations for each level of the response,`j`
+(except for the highest category, where *P*(*Y* &gt; *j*) is zero, so
+the odds are undefined.
 
 R’s `polr()` function parameterizes the coefficients in a different way:
 
-\[logit (P(Y \le j)) = \beta_{j0} – \eta_{1}x_1 – \cdots – \eta_{p} x_p\\
-\eta_i = -\beta_i.\]
+$$logit (P(Y \\le j)) = \\beta\_{j0} – \\eta\_{1}x\_1 – \\cdots – \\eta\_{p} x\_p\\\\
+\\eta\_i = -\\beta\_i.$$
 
 The critical question here is whether the slope is statistically
 meaningful or not. Here we see a positive slope, but the associated
-standard errors are highly dependent on how we parameterize the year
+standard errors are highly dependent on how we parameterize the `Year`
 variable.
 
 ## Interpreting Intercepts and Coefficients
@@ -590,19 +534,20 @@ coefficients(summary(test2))
 How do we interpret the coefficients? Think in terms of a latent
 binomial model for each “hidden” threshold. The three models are linked
 together by the parallel lines assumption (and calculation of common
-deviance) but otherwise, each could stand alone as a binomial model. \[
-logit (P(NC | CYear = x)) = logit (P(Y \le j_{NC} | Year = x)) = \beta_{(NC)0} – \eta_{1} \times CYear \\
-logit (P(C | CYear = x)) = logit (P(Y \le j_{C}| Year = x)) = \beta_{(C)0} – \eta_{1} \times CYear \\
-logit (P(B | CYear = x)) = logit (P(Y \le j_{B} | Year = x)) = \beta_{(B)0} – \eta_{1} \times CYear
-\]
+deviance) but otherwise, each could stand alone as a binomial model.
+$$
+logit (P(NC \| CYear = x)) = logit (P(Y \\le j\_{NC} \| Year = x)) = \\beta\_{(NC)0} – \\eta\_{1} \\times CYear \\\\
+logit (P(C \| CYear = x)) = logit (P(Y \\le j\_{C}\| Year = x)) = \\beta\_{(C)0} – \\eta\_{1} \\times CYear \\\\
+logit (P(B \| CYear = x)) = logit (P(Y \\le j\_{B} \| Year = x)) = \\beta\_{(B)0} – \\eta\_{1} \\times CYear
+$$
 
-\[
-logit (P(NC | Year = x)) = 2.55 -(7.79) \times CYear \\
-logit (P(C | Year = x)) = 97.4 -(7.79) \times CYear  \\
-logit (P(B | Year = x)) = 309.5 -(7.79) \times CYear 
-\]
+$$
+logit (P(NC \| Year = x)) = 2.55 -(7.79) \\times CYear \\\\
+logit (P(C \| Year = x)) = 97.4 -(7.79) \\times CYear  \\\\
+logit (P(B \| Year = x)) = 309.5 -(7.79) \\times CYear 
+$$
 
-So, the Probability, in 2000, (\(CYEAR = 0\)) of
+So, the Probability, in 2000, (*C**Y**E**A**R* = 0) of
 
 1.  being NA (i.e., being below the threshold for Class C),
 
@@ -643,7 +588,10 @@ results would not be convincing.
 
 So, we can apply a similar strategy to all Stations simultaneously. Here
 we use a more recent year to center our regression models, choosing to
-center the models at 2010.
+center the models at 2010. We run all models using a nested tibble, and
+applying the model (using `map()`) to each sub-part of the nested
+tibble. For details, you may want to read `vignette("nest")` from the
+`tidyr` package.
 
 ``` r
 mods <- trend_data %>%
@@ -658,6 +606,9 @@ mods <- trend_data %>%
 ```
 
 ## Example output
+
+We pull model results from the first grouping of the nested tibble, for
+station “S-72”.
 
 ``` r
 mods$Station[[1]]
@@ -715,7 +666,9 @@ round(inv_logit(coef(summary(mods$mcyear[[1]]))[,'Value']),3)
     ## 0.999 0.000 1.000 1.000
 
 These values are the “probabilities” of being below a particular cut
-point, as we saw before.
+point, as we saw before. IN 2010, the proibability mass is all below the
+C to B transition, so wit ha high degree of confidence, the stream was
+Class C at (around) that time.
 
 ## Model Summaries
 
@@ -815,8 +768,8 @@ map(mods$mcyear, summary)
     ## AIC: 17.48321
 
 None of those have T values that suggest statistically significant
-slopes, so this whole analytic strategy is apparently not very
-informative.
+slopes, so this whole analytic strategy is not very robust.
+Nevertheless, we persist.
 
 ## Utility function
 
@@ -864,13 +817,18 @@ preds <- mods %>%
 
 ``` r
 ggplot(preds, aes(Year, as.numeric(preds), color = Station)) +
-  geom_point() +
-  geom_line()
+  geom_point(alpha = 0.25) +
+  geom_line(alpha = 0.25, size = 2) +
+  ylab('Predicted Stream Class') +
+  scale_y_continuous(labels = c('NA', 'C', 'B', 'A'))
 ```
 
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](Trend-Analysis_files/figure-gfm/predictions-1.png)<!-- -->
 
 ## Probabilities
+
+This is probably the most useful graphical summary of the models, but it
+would be very hard to explain to our readers.
 
 ``` r
 mods <- mods %>%
@@ -899,4 +857,4 @@ ggplot(probs, aes(x = Year, y = Probability, color = Class)) +
   theme_cbep(base_size = 12)
 ```
 
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
+![](Trend-Analysis_files/figure-gfm/probabilities-1.png)<!-- -->
