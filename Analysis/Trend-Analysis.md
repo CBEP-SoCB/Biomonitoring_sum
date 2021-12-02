@@ -666,7 +666,7 @@ round(inv_logit(coef(summary(mods$mcyear[[1]]))[,'Value']),3)
     ## 0.999 0.000 1.000 1.000
 
 These values are the “probabilities” of being below a particular cut
-point, as we saw before. IN 2010, the proibability mass is all below the
+point, as we saw before. In 2010, the probability mass is all below the
 C to B transition, so wit ha high degree of confidence, the stream was
 Class C at (around) that time.
 
