@@ -18,7 +18,7 @@ review, critique, learn from, and build upon CBEP science.
 CBEP 2020/2021 State of the Bay data analysis summaries contain a selection of 
 data,  data analysis code, and visualization code as used to produce 
 results shared via our most recent State of Casco Bay report. Usually, these
-archives are organized int otwo or three folders, including the following:
+archives are organized into two or three folders, including the following:
 
 - `Data`  folder.  Contains data in simplified or derived form as used in our
 data  analysis.  Associated metadata is contained in related Markdown documents,
@@ -48,8 +48,8 @@ files are also very flexible, and the data we are interested in finding can be
 buried in complex ways.
 
 1. `KML` files are hierarchical, so that one `KML` file can refer to data
-embedded in other files in the internet.  In fact, the raw `KML` file DEP
-exposes (above) refers to several other files, that contain the actual
+embedded in other files on the internet.  In fact, the raw `KML` file DEP
+exposes (above) refers to several other files that contain the actual
 geographic data.
 
 2. `KML` files often contain embedded data that is itself HTML encoded. The
@@ -68,8 +68,8 @@ attribute data in the KML file.
 All data reported here was accessed from the DEP website, based on information
 accessible through that "kml" file.  CBEP used small python scripts
 to access and reorganize available data.  Data was initially accessed at a 
-state-wide and secondarily filtered down to data only from the Casco Bay 
+state-wide level and secondarily filtered down to data only from the Casco Bay 
 watershed, using a combination of GIS and python code. Details and code are 
-available in a companion GitHub repository, `Biomonitoting_Access`, but as the
+available in a companion GitHub repository, `Biomonitoring_Access`, but as the
 URL for that archive is in flux, we recommend contacting CBEP directly for
 additional information.
