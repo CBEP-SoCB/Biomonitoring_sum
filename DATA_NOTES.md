@@ -56,7 +56,7 @@ desktop in Windows is often problematic.
 ## Casco Bay Watershed Station Lists
 We worked in ArcGIS to generate lists of biomonitoring
 stations  and invertebrate biomonitoring stations in the Casco Bay Watershed. 
-These  file is called `CB_Biomonitoting_Stations.csv` and
+These files are called `CB_Biomonitoting_Stations.csv` and
 `CB_Invertebrate_Stations.csv`. 
 
 The process followed the obvious steps:
@@ -66,7 +66,7 @@ The process followed the obvious steps:
 *  selecting points that overlap the Casco Bay Watershed, 
 *  (Filtering to Stream Invertebrate sampling stations if necessary). 
 
-The only complex stepin perparing the GIS files involved adding local 
+The only complex step in preparing the GIS files involved adding local 
 imperviousness to the data.  That involved running a spatial merge with the
 Catchments Data Layer (see below) to extract estimates of impervious cover in
 local catchments, and exporting the data from ArcGIS. We removed unnecessary
@@ -123,8 +123,8 @@ on aerial photography from 2007, so they represent on-the-ground conditions
 from over a decade ago, but they are the most recent values available.  
 
 Our derived data layer aggregated impervious cover data by (somewhat simplified)
-NAD+ V2 catchement areas.  We simplified the NAD+ V2 catchements principally to
-remove catchements under 50 Ha, and absorb some small coastal catchments
+NAD+ V2 catchment areas.  We simplified the NAD+ V2 catchements principally to
+remove catchments under 50 Ha, and absorb some small coastal catchments
 into adjacent areas that drain to the same coastal bodies of water.
 
 Our notes from 2015 describe preparation of this data sets as follows:

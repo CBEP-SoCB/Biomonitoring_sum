@@ -47,8 +47,8 @@ files are also very flexible, and the data we are interested in finding can be
 buried in complex ways.
 
 1. `KML` files are hierarchical, so that one `KML` file can refer to data
-embedded in other files in the internet.  In fact, the raw `KML` file DEP
-exposes (above) refers to several other files, that contain the actual
+embedded in other files on the internet.  In fact, the raw `KML` file DEP
+exposes (above) refers to several other files that contain the actual
 geographic data.
 
 2. `KML` files often contain embedded data that is itself HTML encoded. The
@@ -67,8 +67,8 @@ attribute data in the KML file.
 All data reported here was accessed from the DEP website, based on information
 accessible through that "kml" file.  CBEP used small python scripts
 to access and reorganize available data.  Data was initially accessed at a 
-state-wide and secondarily filtered down to data only from the Casco Bay 
+state-wide level and secondarily filtered down to data only from the Casco Bay 
 watershed, using a combination of GIS and python code. Details and code are 
-available in a companion GitHub repository, `Biomonitoting_Access`, but as the
+available in a companion GitHub repository, `Biomonitoring_Access`, but as the
 URL for that archive is in flux, we recommend contacting CBEP directly for
 additional information.

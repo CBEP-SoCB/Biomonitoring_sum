@@ -45,7 +45,7 @@ PctImperv   | Imperviousness in the local catchment         | Percent
     which can have waters somewhat more impacted by pollution and other
     stressors.  "NA"" is used to signal "non attainment".  In this setting, it
     is NOT a signal for missing data. Sine NA is used by R as the default way of
-    showing missing data, this may requires special handling during loading of
+    showing missing data, this may require special handling during loading of
     data in R. "I" stands for "Indeterminate", which signals a sample that
     could not be reliably classified into one of the other four categories.
 

@@ -13,7 +13,7 @@ online resources.  These are mostly KMZ files containing
 data.  They appear to contain the same -- or nearly the same -- data,  organized 
 in different ways for display purposes.
 
-A `KMZ` file is zip archive containing a `KML` file, usually with other 
+A `KMZ` file is a zip archive containing a `KML` file, usually with other 
 associated files. Our interest rests in analyzing the data contained in those
 embedded KML files.
 
@@ -106,7 +106,7 @@ The HTML data has the following contents:
                      samples)  
 *  Sample Date      (In MM/DD/YYYY format)  
 *  Statutory Class  (A code designating designated class:  'AA', 'A', 'B', 'C')
-*  Attained Class   (Did the sample meet or exceed the designates stream class?)
+*  Attained Class   (Did the sample meet or exceed the designated stream class?)
 *  Report           (Some samples have associated with them a PDF file 
                      containing results of sampling.  If available, this item 
                      contains an <a> tag containing a href pointing to the 
