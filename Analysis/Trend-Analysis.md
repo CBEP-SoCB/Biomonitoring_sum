@@ -73,68 +73,37 @@ inv_logit <- function(x) {1/(1+exp(-x))}
 
 ``` r
 library(readr)
-```
-
-    ## Warning: package 'readr' was built under R version 4.0.5
-
-``` r
 library(MASS) # for the polr() function
 library(Hmisc)
-```
-
-    ## Warning: package 'Hmisc' was built under R version 4.0.5
-
-    ## Loading required package: lattice
-
-    ## Loading required package: survival
-
-    ## Loading required package: Formula
-
-    ## Loading required package: ggplot2
-
-    ## Warning: package 'ggplot2' was built under R version 4.0.5
-
-    ## 
-    ## Attaching package: 'Hmisc'
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     format.pval, units
-
-``` r
+#> Warning: package 'Hmisc' was built under R version 4.0.5
+#> Loading required package: lattice
+#> Loading required package: survival
+#> Loading required package: Formula
+#> Loading required package: ggplot2
+#> Warning: package 'ggplot2' was built under R version 4.0.5
+#> 
+#> Attaching package: 'Hmisc'
+#> The following objects are masked from 'package:base':
+#> 
+#>     format.pval, units
 library(tidyverse)
-```
-
-    ## Warning: package 'tidyverse' was built under R version 4.0.5
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
-
-    ## v tibble  3.1.4     v dplyr   1.0.7
-    ## v tidyr   1.1.3     v stringr 1.4.0
-    ## v purrr   0.3.4     v forcats 0.5.1
-
-    ## Warning: package 'tibble' was built under R version 4.0.5
-
-    ## Warning: package 'tidyr' was built under R version 4.0.5
-
-    ## Warning: package 'dplyr' was built under R version 4.0.5
-
-    ## Warning: package 'forcats' was built under R version 4.0.5
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter()    masks stats::filter()
-    ## x dplyr::lag()       masks stats::lag()
-    ## x dplyr::select()    masks MASS::select()
-    ## x dplyr::src()       masks Hmisc::src()
-    ## x dplyr::summarize() masks Hmisc::summarize()
-
-``` r
+#> Warning: package 'tidyverse' was built under R version 4.0.5
+#> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+#> v tibble  3.1.6     v dplyr   1.0.7
+#> v tidyr   1.1.4     v stringr 1.4.0
+#> v purrr   0.3.4     v forcats 0.5.1
+#> Warning: package 'tidyr' was built under R version 4.0.5
+#> Warning: package 'dplyr' was built under R version 4.0.5
+#> Warning: package 'forcats' was built under R version 4.0.5
+#> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+#> x dplyr::filter()    masks stats::filter()
+#> x dplyr::lag()       masks stats::lag()
+#> x dplyr::select()    masks MASS::select()
+#> x dplyr::src()       masks Hmisc::src()
+#> x dplyr::summarize() masks Hmisc::summarize()
 library(emmeans)
-```
+#> Warning: package 'emmeans' was built under R version 4.0.5
 
-    ## Warning: package 'emmeans' was built under R version 4.0.5
-
-``` r
 library(CBEPgraphics)
 load_cbep_fonts()
 theme_set(theme_cbep())
@@ -178,17 +147,14 @@ the_data <- read_csv(file.path(sibling, fn), na = '') %>%
   mutate(Date = as.Date(Date, format = '%m/%d/%Y'),
          Year = as.integer(format(Date, format = '%Y'))) %>%
   relocate(Attained, .after = Final)
+#> Rows: 938 Columns: 8
+#> -- Column specification --------------------------------------------------------
+#> Delimiter: ","
+#> chr (8): Station Number, Sample Type, Sample ID, Sample Date, Statutory Clas...
+#> 
+#> i Use `spec()` to retrieve the full column specification for this data.
+#> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
-
-    ## Rows: 938 Columns: 8
-
-    ## -- Column specification --------------------------------------------------------
-    ## Delimiter: ","
-    ## chr (8): Station Number, Sample Type, Sample ID, Sample Date, Statutory Clas...
-
-    ## 
-    ## i Use `spec()` to retrieve the full column specification for this data.
-    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ### Station Data
 
@@ -201,18 +167,15 @@ select(-contains('FID')) %>%
          Station = Station_Nu,
          Drainage = Major_Drai,
          Imperv = PctImperv)
+#> Rows: 219 Columns: 12
+#> -- Column specification --------------------------------------------------------
+#> Delimiter: ","
+#> chr (7): Station_Nu, Station, Town, County, Major_Drai, Site_Type, Sample_Typ
+#> dbl (5): FID, FID_1, Latitude, Longitude, PctImperv
+#> 
+#> i Use `spec()` to retrieve the full column specification for this data.
+#> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
-
-    ## Rows: 219 Columns: 12
-
-    ## -- Column specification --------------------------------------------------------
-    ## Delimiter: ","
-    ## chr (7): Station_Nu, Station, Town, County, Major_Drai, Site_Type, Sample_Typ
-    ## dbl (5): FID, FID_1, Latitude, Longitude, PctImperv
-
-    ## 
-    ## i Use `spec()` to retrieve the full column specification for this data.
-    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ## Create Trend Data
 
@@ -265,10 +228,9 @@ Only 11 stations meet our strict criteria for Trend Stations.
 
 ``` r
 (trend_stations <- unique(trend_data$Station))
+#>  [1] "S-72"  "S-143" "S-144" "S-158" "S-237" "S-330" "S-457" "S-655" "S-656"
+#> [10] "S-722" "S-723"
 ```
-
-    ##  [1] "S-72"  "S-143" "S-144" "S-158" "S-237" "S-330" "S-457" "S-655" "S-656"
-    ## [10] "S-722" "S-723"
 
 And for most of those, there is no variation in Class (see below). We
 can select only those Stations with some variation in observed Class as
@@ -286,7 +248,7 @@ ggplot(trend_data, aes(x = Station, y = Final_f,
   theme_cbep(base_size = 12)
 ```
 
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+<img src="Trend-Analysis_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
 ``` r
 ggplot(trend_data, aes(x = Year, y = as.numeric(Final_f)) ) +
@@ -294,11 +256,10 @@ ggplot(trend_data, aes(x = Year, y = as.numeric(Final_f)) ) +
   geom_point() +
   geom_smooth(se = FALSE, method = 'lm') +
   theme_cbep(base_size = 12)
+#> `geom_smooth()` using formula 'y ~ x'
 ```
 
-    ## `geom_smooth()` using formula 'y ~ x'
-
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+<img src="Trend-Analysis_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 Relatively few Stations show any variation in observations, and even
 fewer of them show anything that looks like a trend.
@@ -317,9 +278,8 @@ change_stations <- trend_data %>%
   pull(Station)
 
 change_stations
+#> [1] "S-143" "S-144" "S-237" "S-457" "S-72"
 ```
-
-    ## [1] "S-143" "S-144" "S-237" "S-457" "S-72"
 
 ## Does the Station Meet Class?
 
@@ -329,7 +289,7 @@ ggplot(trend_data, aes(x = Station, y = Attained, group = Year, fill = Year)) +
   theme_cbep(base_size = 12)
 ```
 
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+<img src="Trend-Analysis_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 ``` r
 attained_change_stations <- trend_data %>%
@@ -343,9 +303,8 @@ attained_change_stations <- trend_data %>%
   pull(Station)
 
 attained_change_stations
+#> [1] "S-143" "S-237" "S-72"
 ```
-
-    ## [1] "S-143" "S-237" "S-72"
 
 So, only 5 unique samples with deep sampling histories also show any
 variation in observed class, and only 3 changed whether they met class
@@ -377,7 +336,7 @@ tmp1 <- trend_data %>%
 ggplot(tmp1, aes(y = Final_f, x = Year)) + geom_point()
 ```
 
-![](Trend-Analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+<img src="Trend-Analysis_files/figure-gfm/unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
 
 ## Initial Model
 
@@ -408,34 +367,31 @@ test2 <- polr(Final_f ~ CYear, data = tmp1,
              start=c(0, 1, 2, 3), Hess = TRUE,
              control = list(maxit = 50000))
 test2$convergence
+#> [1] 0
 ```
-
-    ## [1] 0
 
 But model results are apparently unstable.
 
 ``` r
 summary(test2)
+#> Warning in sqrt(diag(vc)): NaNs produced
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = tmp1, start = c(0, 1, 
+#>     2, 3), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>       Value Std. Error  t value
+#> CYear 7.792       4802 0.001623
+#> 
+#> Intercepts:
+#>      Value      Std. Error t value   
+#> NA|C     2.5499        NaN        NaN
+#> C|B     97.3754 60972.1774     0.0016
+#> B|A    309.4777 60972.1774     0.0051
+#> 
+#> Residual Deviance: 1.388268e-08 
+#> AIC: 8.00
 ```
-
-    ## Warning in sqrt(diag(vc)): NaNs produced
-
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = tmp1, start = c(0, 1, 
-    ##     2, 3), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##       Value Std. Error  t value
-    ## CYear 7.792       4802 0.001623
-    ## 
-    ## Intercepts:
-    ##      Value      Std. Error t value   
-    ## NA|C     2.5499        NaN        NaN
-    ## C|B     97.3754 60972.1774     0.0016
-    ## B|A    309.4777 60972.1774     0.0051
-    ## 
-    ## Residual Deviance: 1.388268e-08 
-    ## AIC: 8.00
 
 The intercepts are large, although not crazy ($p(NC \~ \| \~ Year =
 2000) $ 0.9275735), The slope for CYEAR is high, and everything has huge
@@ -472,7 +428,7 @@ ggplot(pp2, aes(x = Year, y = Probability, color = Class )) +
   geom_point()
 ```
 
-![](Trend-Analysis_files/figure-gfm/s_72_example_probabilities-1.png)<!-- -->
+<img src="Trend-Analysis_files/figure-gfm/s_72_example_probabilities-1.png" style="display: block; margin: auto;" />
 By Centering the model, we brought the center of the model into the
 center of the data, allowing a tighter fit the the data, which here
 could be fit exactly, leading to unstable behavior.
@@ -521,15 +477,13 @@ variable.
 
 ``` r
 coefficients(summary(test2))
+#> Warning in sqrt(diag(vc)): NaNs produced
+#>            Value Std. Error     t value
+#> CYear   7.791649   4801.821 0.001622645
+#> NA|C    2.549916        NaN         NaN
+#> C|B    97.375416  60972.177 0.001597047
+#> B|A   309.477682  60972.177 0.005075720
 ```
-
-    ## Warning in sqrt(diag(vc)): NaNs produced
-
-    ##            Value Std. Error     t value
-    ## CYear   7.791649   4801.821 0.001622645
-    ## NA|C    2.549916        NaN         NaN
-    ## C|B    97.375416  60972.177 0.001597047
-    ## B|A   309.477682  60972.177 0.005075720
 
 How do we interpret the coefficients? Think in terms of a latent
 binomial model for each “hidden” threshold. The three models are linked
@@ -559,9 +513,8 @@ are as follows:
 
 ``` r
 round(inv_logit(c(2.55, 97.4, 309.5)),3)
+#> [1] 0.928 1.000 1.000
 ```
-
-    ## [1] 0.928 1.000 1.000
 
 That is, there is only a small basis to hope for good water quality at
 this site in the year 2000.
@@ -570,9 +523,8 @@ if we “fast forward” a few years to 2010, we’d get :
 
 ``` r
 round(inv_logit(c(2.55-7.79*10, 97.4-7.79*10, 309.5-7.79*10)),3)
+#> [1] 0 1 1
 ```
-
-    ## [1] 0 1 1
 
 So, to within rounding error, we’re getting class C. (All the
 probability mass is higher than the threshold to Class C, but Lower than
@@ -612,62 +564,55 @@ station “S-72”.
 
 ``` r
 mods$Station[[1]]
-```
-
-    ## [1] "S-72"
-
-``` r
+#> [1] "S-72"
 mods$mcyear[[1]]
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
+#>     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>    CYear 
+#> 6.823056 
+#> 
+#> Intercepts:
+#>      NA|C       C|B       B|A 
+#> -51.19953  17.06242  59.03461 
+#> 
+#> Residual Deviance: 2.324628e-07 
+#> AIC: 8.00
 ```
-
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
-    ##     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##    CYear 
-    ## 6.823056 
-    ## 
-    ## Intercepts:
-    ##      NA|C       C|B       B|A 
-    ## -51.19953  17.06242  59.03461 
-    ## 
-    ## Residual Deviance: 2.324628e-07 
-    ## AIC: 8.00
 
 ``` r
 summary(mods$mcyear[[1]])
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
+#>     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>       Value Std. Error t value
+#> CYear 6.823       1430 0.00477
+#> 
+#> Intercepts:
+#>      Value       Std. Error  t value    
+#> NA|C    -51.1995   8798.0508     -0.0058
+#> C|B      17.0624   5065.4365      0.0034
+#> B|A      59.0346 260921.8305      0.0002
+#> 
+#> Residual Deviance: 2.324628e-07 
+#> AIC: 8.00
 ```
-
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
-    ##     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##       Value Std. Error t value
-    ## CYear 6.823       1430 0.00477
-    ## 
-    ## Intercepts:
-    ##      Value       Std. Error  t value    
-    ## NA|C    -51.1995   8798.0508     -0.0058
-    ## C|B      17.0624   5065.4365      0.0034
-    ## B|A      59.0346 260921.8305      0.0002
-    ## 
-    ## Residual Deviance: 2.324628e-07 
-    ## AIC: 8.00
 
 We see again the huge standard errors.
 
 ``` r
 round(inv_logit(coef(summary(mods$mcyear[[1]]))[,'Value']),3)
+#> CYear  NA|C   C|B   B|A 
+#> 0.999 0.000 1.000 1.000
 ```
 
-    ## CYear  NA|C   C|B   B|A 
-    ## 0.999 0.000 1.000 1.000
-
 These values are the “probabilities” of being below a particular cut
-point, as we saw before. IN 2010, the proibability mass is all below the
-C to B transition, so wit ha high degree of confidence, the stream was
+point, as we saw before. In 2010, the probability mass is all below the
+C to B transition, so with a high degree of confidence, the stream was
 Class C at (around) that time.
 
 ## Model Summaries
@@ -675,97 +620,96 @@ Class C at (around) that time.
 ``` r
 names(mods$mcyear) <-  mods$Station
 map(mods$mcyear, summary)
+#> $`S-72`
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
+#>     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>       Value Std. Error t value
+#> CYear 6.823       1430 0.00477
+#> 
+#> Intercepts:
+#>      Value       Std. Error  t value    
+#> NA|C    -51.1995   8798.0508     -0.0058
+#> C|B      17.0624   5065.4365      0.0034
+#> B|A      59.0346 260921.8305      0.0002
+#> 
+#> Residual Deviance: 2.324628e-07 
+#> AIC: 8.00 
+#> 
+#> $`S-143`
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
+#>     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>         Value Std. Error t value
+#> CYear -0.1001    0.09576  -1.045
+#> 
+#> Intercepts:
+#>      Value    Std. Error t value 
+#> NA|C  -0.7898   1.0795    -0.7316
+#> C|B    1.3250   1.1376     1.1647
+#> B|A   13.7025 165.3628     0.0829
+#> 
+#> Residual Deviance: 23.48387 
+#> AIC: 31.48387 
+#> 
+#> $`S-144`
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
+#>     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>         Value Std. Error t value
+#> CYear -0.2693     0.2384  -1.129
+#> 
+#> Intercepts:
+#>      Value     Std. Error t value  
+#> NA|C    4.6594    3.1766     1.4668
+#> C|B  1081.6304    3.1766   340.5027
+#> B|A  1082.3304    3.1766   340.7230
+#> 
+#> Residual Deviance: 8.572075 
+#> AIC: 16.57207 
+#> 
+#> $`S-237`
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
+#>     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>          Value Std. Error t value
+#> CYear -0.03996     0.1333 -0.2998
+#> 
+#> Intercepts:
+#>      Value    Std. Error t value 
+#> NA|C -10.1809  40.6839    -0.2502
+#> C|B  -10.1291  39.6937    -0.2552
+#> B|A   -1.9174   0.7583    -2.5286
+#> 
+#> Residual Deviance: 11.95822 
+#> AIC: 19.95822 
+#> 
+#> $`S-457`
+#> Call:
+#> polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
+#>     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
+#> 
+#> Coefficients:
+#>       Value Std. Error t value
+#> CYear 0.166     0.1815  0.9145
+#> 
+#> Intercepts:
+#>      Value         Std. Error    t value      
+#> NA|C -7.050000e-01  1.600100e+00 -4.406000e-01
+#> C|B   7.083389e+13  1.600100e+00  4.426884e+13
+#> B|A   7.083389e+13  1.600100e+00  4.426884e+13
+#> 
+#> Residual Deviance: 9.483206 
+#> AIC: 17.48321
 ```
-
-    ## $`S-72`
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
-    ##     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##       Value Std. Error t value
-    ## CYear 6.823       1430 0.00477
-    ## 
-    ## Intercepts:
-    ##      Value       Std. Error  t value    
-    ## NA|C    -51.1995   8798.0508     -0.0058
-    ## C|B      17.0624   5065.4365      0.0034
-    ## B|A      59.0346 260921.8305      0.0002
-    ## 
-    ## Residual Deviance: 2.324628e-07 
-    ## AIC: 8.00 
-    ## 
-    ## $`S-143`
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
-    ##     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##         Value Std. Error t value
-    ## CYear -0.1001    0.09576  -1.045
-    ## 
-    ## Intercepts:
-    ##      Value    Std. Error t value 
-    ## NA|C  -0.7898   1.0795    -0.7316
-    ## C|B    1.3250   1.1376     1.1647
-    ## B|A   13.7025 165.3628     0.0829
-    ## 
-    ## Residual Deviance: 23.48387 
-    ## AIC: 31.48387 
-    ## 
-    ## $`S-144`
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
-    ##     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##         Value Std. Error t value
-    ## CYear -0.2693     0.2384  -1.129
-    ## 
-    ## Intercepts:
-    ##      Value     Std. Error t value  
-    ## NA|C    4.6594    3.1766     1.4668
-    ## C|B  1081.6304    3.1766   340.5027
-    ## B|A  1082.3304    3.1766   340.7230
-    ## 
-    ## Residual Deviance: 8.572075 
-    ## AIC: 16.57207 
-    ## 
-    ## $`S-237`
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
-    ##     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##          Value Std. Error t value
-    ## CYear -0.03996     0.1333 -0.2998
-    ## 
-    ## Intercepts:
-    ##      Value    Std. Error t value 
-    ## NA|C -10.1809  40.6839    -0.2502
-    ## C|B  -10.1291  39.6937    -0.2552
-    ## B|A   -1.9174   0.7583    -2.5286
-    ## 
-    ## Residual Deviance: 11.95822 
-    ## AIC: 19.95822 
-    ## 
-    ## $`S-457`
-    ## Call:
-    ## polr(formula = Final_f ~ CYear, data = df, start = c(0.1, 0.2, 
-    ##     0.3, 1), control = list(maxit = 50000), Hess = TRUE)
-    ## 
-    ## Coefficients:
-    ##       Value Std. Error t value
-    ## CYear 0.166     0.1815  0.9145
-    ## 
-    ## Intercepts:
-    ##      Value         Std. Error    t value      
-    ## NA|C -7.050000e-01  1.600100e+00 -4.406000e-01
-    ## C|B   7.083389e+13  1.600100e+00  4.426884e+13
-    ## B|A   7.083389e+13  1.600100e+00  4.426884e+13
-    ## 
-    ## Residual Deviance: 9.483206 
-    ## AIC: 17.48321
 
 None of those have T values that suggest statistically significant
 slopes, so this whole analytic strategy is not very robust.
@@ -787,18 +731,17 @@ for (row in 1:length(mods$Station)) {
                                      mm[[row]][3],
                                      mm[[row]][4]))
 }
+#>          NA|C    C|B    B|A 
+#> "S-72"    "0"    "1"    "1" 
+#>            NA|C     C|B     B|A 
+#> "S-143" "0.312"  "0.79"     "1" 
+#>            NA|C     C|B     B|A 
+#> "S-144" "0.991"     "1"     "1" 
+#>            NA|C     C|B     B|A 
+#> "S-237"     "0"     "0" "0.128" 
+#>            NA|C     C|B     B|A 
+#> "S-457" "0.331"     "1"     "1"
 ```
-
-    ##          NA|C    C|B    B|A 
-    ## "S-72"    "0"    "1"    "1" 
-    ##            NA|C     C|B     B|A 
-    ## "S-143" "0.312"  "0.79"     "1" 
-    ##            NA|C     C|B     B|A 
-    ## "S-144" "0.991"     "1"     "1" 
-    ##            NA|C     C|B     B|A 
-    ## "S-237"     "0"     "0" "0.128" 
-    ##            NA|C     C|B     B|A 
-    ## "S-457" "0.331"     "1"     "1"
 
 ## Predictions
 
@@ -823,7 +766,7 @@ ggplot(preds, aes(Year, as.numeric(preds), color = Station)) +
   scale_y_continuous(labels = c('NA', 'C', 'B', 'A'))
 ```
 
-![](Trend-Analysis_files/figure-gfm/predictions-1.png)<!-- -->
+<img src="Trend-Analysis_files/figure-gfm/predictions-1.png" style="display: block; margin: auto;" />
 
 ## Probabilities
 
@@ -857,4 +800,4 @@ ggplot(probs, aes(x = Year, y = Probability, color = Class)) +
   theme_cbep(base_size = 12)
 ```
 
-![](Trend-Analysis_files/figure-gfm/probabilities-1.png)<!-- -->
+<img src="Trend-Analysis_files/figure-gfm/probabilities-1.png" style="display: block; margin: auto;" />

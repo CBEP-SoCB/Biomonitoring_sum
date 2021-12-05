@@ -13,6 +13,13 @@ output:
   src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
   style="position:absolute;top:10px;right:50px;" />
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = 'center',
+                      fig.width = 5, fig.height = 4,
+                      collapse = TRUE, comment = "#>")
+```
+
+
 # Introduction
 Maine DEP has developed a robust stream classification model that is based on
 collecting stream invertebrates from "rock baskets" left in streams for about
@@ -427,8 +434,8 @@ round(inv_logit(coef(summary(mods$mcyear[[1]]))[,'Value']),3)
 ```
 
 These values are the "probabilities" of being below a particular cut point, as 
-we saw before.  IN 2010, the proibability mass is all below the C to B
-transition, so wit ha high degree of confidence, the stream was Class C at 
+we saw before.  In 2010, the probability mass is all below the C to B
+transition, so with a high degree of confidence, the stream was Class C at 
 (around) that time.
 
 ## Model Summaries
