@@ -1,6 +1,6 @@
 # Analysis of Maine DEP Stream Biomonitoring Data
 
-Analysis of Maine stream invertebrate biomonitoting data for 2020 State of 
+Analysis of Maine stream invertebrate biomonitoring data for 2020 State of 
 Casco Bay report.
 
 <img
