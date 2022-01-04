@@ -34,7 +34,7 @@ The key output files are the following:
 # Detailed Explanation of Data Derivation
 ## Parsed CSV Files
 The files `Biomonitoring_Samples_Parsed.csv` and `Biomonitoring_Stations_Parsed.csv`
-Were generated from the KML files using a python script,`DataParserStation.py`,
+were generated from the KML files using a python script,`DataParserStation.py`,
 and an associated "helper Class" defined in `htmlParse2Data.py`. 
 
 The `DataParserStation.py` script is a simple script that instantiates 
